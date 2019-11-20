@@ -3,7 +3,6 @@ import { Text, View, Image, StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-
  class ListItem extends Component {
     render() {
       return(
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       padding: 10,
       alignItems: 'center',
-      height: 50,
+      height: 55,
       fontWeight: '600'
     },
     avatar: {
