@@ -10,7 +10,7 @@ const Header = (props) => {
   return (
     <View style={viewStyle}>
       <Text style={textStyle}>{props.headerText}</Text>
-      { firebase.auth().currentUser &&
+      { firebase.apps.length === 1 && firebase.auth().currentUser &&
         <View style={{position: 'absolute', right: 0 }}>
           <Button title="logout" onPress={() => firebase.auth().signOut()} />
         </View>

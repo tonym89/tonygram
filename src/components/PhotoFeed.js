@@ -31,7 +31,7 @@ class PhotoFeed extends Component {
         })
     }
 
-  onChooseImagePress = async () => {
+  onChooseImagePress = () => {
     const options = { quality: 0 };
     ImagePicker.showImagePicker(options, response => {
       if (response.uri) {
