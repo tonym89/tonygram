@@ -10,7 +10,6 @@ class App extends Component {
     super(props);
     this.state = {
       loggedIn: null,
-      userId: ''
     };
   };
 
@@ -31,7 +30,6 @@ class App extends Component {
       if (user) {
         this.setState({
           loggedIn: true,
-          userId: user.uid
         });
       } else {
         this.setState({ loggedIn: false });
@@ -43,12 +41,8 @@ class App extends Component {
       switch (this.state.loggedIn) {
         case true:
           return (
-            <View>
-              <PhotoFeed userId = { this.state.userId } />
-              <Text>{this.state.userId}</Text>
-              <Button onPress={() => firebase.auth().signOut()}>
-                Log Out
-              </Button>
+            <View style={{flex: 1}}>
+              <PhotoFeed />
             </View>
           );
         case false:

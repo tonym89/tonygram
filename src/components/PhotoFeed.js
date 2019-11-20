@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Image, Alert, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import * as firebase from 'firebase';
 import RNFetchBlob from 'rn-fetch-blob';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ListItem from './ListItem';
 
 const Blob = RNFetchBlob.polyfill.Blob;
@@ -26,7 +28,6 @@ class PhotoFeed extends Component {
             photos: Object.values(snapshot.val()),
             photoCount: Object.values(snapshot.val()).length
           })
-          console.log(snapshot.val())
           }
         })
     }
@@ -34,12 +35,8 @@ class PhotoFeed extends Component {
   onChooseImagePress = async () => {
     const options = { quality: 0 };
     ImagePicker.showImagePicker(options, response => {
-      console.log("response", response);
       if (response.uri) {
         this.uploadBlob(response.uri, "test-image")
-          .then(() => {
-            Alert.alert("Success");
-          })
       }
     })
   }
@@ -68,7 +65,6 @@ class PhotoFeed extends Component {
           uploadBlob.close()
           window.XMLHttpRequest = originalXMLHttpRequest;
           window.Blob = originalBlob;
-          console.log(imageRef.getDownloadURL())
           imageRef.getDownloadURL().then(function(downloadURL){
             firebase.database().ref(`users/${currentUser.uid}/photos`)
               .push({ photo: downloadURL })
@@ -84,41 +80,26 @@ class PhotoFeed extends Component {
     })
   }
 
-  uploadImage = async (uri, imageName) => {
-    const { currentUser } = firebase.auth()
-    const response = await fetch(uri);
-    console.log(response)
-    const blob = await response.blob();
-    console.log(blob)
-    var ref = firebase.storage().ref().child(`users/` + imageName);
-    ref.put(blob);
-    ref.put(blob).snapshot.ref.getDownloadURL().then(function(downloadURL){
-      firebase.database().ref(`users/${currentUser.uid}/photos`)
-        .push({ photo: downloadURL })
-    })
-  }
-
   handleFetchPhoto = () => {
     const { currentUser } = firebase.auth()
     firebase.database().ref(`users/${currentUser.uid}/photos`)
       .on( 'value', snapshot => {
         this.setState({photos: Object.values(snapshot.val())})
-        console.log(snapshot.val())
       })
   }
 
   render(){
     return(
       <View style={styles.mainContainer}>
-        <Button title="Upload Photo" onPress={this.onChooseImagePress} />
         <View>
-          <FlatList windowSize={80}
-                    data={this.state.photos.reverse()}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item}) => <ListItem data={item}/>}
-                    style={styles.flatList}
-            />
+          <FlatList
+            data={this.state.photos.reverse()}
+            windowSize={80}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => <ListItem data={item}/>}
+          />
         </View>
+        <ActionButton buttonColor="rgba(231,76,60,1)" onPress={this.onChooseImagePress} />
       </View>
     );
   }
@@ -128,9 +109,6 @@ const styles = StyleSheet.create({
     mainContainer: {
       alignItems: 'center'
     },
-    flatList: {
-      marginBottom: 200
-    }
   });
 
 export default PhotoFeed;
