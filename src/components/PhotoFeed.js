@@ -4,7 +4,6 @@ import ImagePicker from 'react-native-image-picker';
 import * as firebase from 'firebase';
 import RNFetchBlob from 'rn-fetch-blob';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 import ListItem from './ListItem';
 
 const Blob = RNFetchBlob.polyfill.Blob;
@@ -36,7 +35,7 @@ class PhotoFeed extends Component {
     const options = { quality: 0 };
     ImagePicker.showImagePicker(options, response => {
       if (response.uri) {
-        this.uploadBlob(response.uri, "test-image")
+        this.uploadBlob(response.uri)
       }
     })
   }
@@ -80,13 +79,6 @@ class PhotoFeed extends Component {
     })
   }
 
-  handleFetchPhoto = () => {
-    const { currentUser } = firebase.auth()
-    firebase.database().ref(`users/${currentUser.uid}/photos`)
-      .on( 'value', snapshot => {
-        this.setState({photos: Object.values(snapshot.val())})
-      })
-  }
 
   render(){
     return(

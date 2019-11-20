@@ -55,7 +55,7 @@ class App extends Component {
     render() {
       return (
         <SafeAreaView style={styles.safeArea}>
-          <Header headerText="TonyGram" />
+          <Header headerText="TonyGram" loggedIn={this.state.loggedIn} />
           {this.renderContent()}
         </SafeAreaView>
       );
