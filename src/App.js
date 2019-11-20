@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
@@ -43,7 +43,7 @@ class App extends Component {
       switch (this.state.loggedIn) {
         case true:
           return (
-            <View style={{ justifyContent: 'center', height: 800}}>
+            <View>
               <PhotoFeed userId = { this.state.userId } />
               <Text>{this.state.userId}</Text>
               <Button onPress={() => firebase.auth().signOut()}>
@@ -60,12 +60,18 @@ class App extends Component {
 
     render() {
       return (
-        <View>
+        <SafeAreaView style={styles.safeArea}>
           <Header headerText="TonyGram" />
           {this.renderContent()}
-        </View>
+        </SafeAreaView>
       );
     }
   }
+
+  const styles = StyleSheet.create({
+      safeArea: {
+        flex: 1,
+      }
+    });
 
   export default App;

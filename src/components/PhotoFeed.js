@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Image, Alert, FlatList } from 'react-native';
+import { View, Text, Button, Image, Alert, FlatList, StyleSheet } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import * as firebase from 'firebase';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -50,10 +50,6 @@ class PhotoFeed extends Component {
     const originalBlob = window.Blob
     window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
     window.Blob = Blob;
-
-    var numberOfPhotos = firebase.storage().ref().child(`users/${currentUser.uid}/photos`);
-    console.log(numberOfPhotos)
-
 
     return new Promise((resolve, reject) => {
       const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
@@ -113,17 +109,28 @@ class PhotoFeed extends Component {
 
   render(){
     return(
-      <View>
-        <Button title="Choose image..." onPress={this.onChooseImagePress} />
-        <Button title="Fetch Photo" onPress={this.handleFetchPhoto} />
-        <FlatList windowSize={80}
-                   data={this.state.photos}
-                   keyExtractor={(item, index) => index.toString()}
-                   renderItem={({item}) => <ListItem data={item}/>}
-          />
+      <View style={styles.mainContainer}>
+        <Button title="Upload Photo" onPress={this.onChooseImagePress} />
+        <View>
+          <FlatList windowSize={80}
+                    data={this.state.photos.reverse()}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item}) => <ListItem data={item}/>}
+                    style={styles.flatList}
+            />
+        </View>
       </View>
     );
   }
 };
+
+const styles = StyleSheet.create({
+    mainContainer: {
+      alignItems: 'center'
+    },
+    flatList: {
+      marginBottom: 200
+    }
+  });
 
 export default PhotoFeed;
