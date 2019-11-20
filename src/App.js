@@ -17,14 +17,14 @@ class App extends Component {
   componentDidMount() {
     // Initialize Firebase
       const firebaseConfig = {
-      apiKey: "AIzaSyBNYIW07Bq5pKwqGxmorO4Ka7a471jBOcw",
-      authDomain: "tonygram.firebaseapp.com",
-      databaseURL: "https://tonygram.firebaseio.com",
-      projectId: "tonygram",
-      storageBucket: "tonygram.appspot.com",
-      messagingSenderId: "967676689647",
-      appId: "1:967676689647:web:559e449ac7fbfa7cb66f1a",
-      measurementId: "G-078J66YEJP"
+        apiKey: "AIzaSyBNYIW07Bq5pKwqGxmorO4Ka7a471jBOcw",
+        authDomain: "tonygram.firebaseapp.com",
+        databaseURL: "https://tonygram.firebaseio.com",
+        projectId: "tonygram",
+        storageBucket: "tonygram.appspot.com",
+        messagingSenderId: "967676689647",
+        appId: "1:967676689647:web:559e449ac7fbfa7cb66f1a",
+        measurementId: "G-078J66YEJP"
     };
     firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
@@ -43,7 +43,7 @@ class App extends Component {
       switch (this.state.loggedIn) {
         case true:
           return (
-            <View style={{ justifyContent: 'center', height: 400}}>
+            <View style={{ justifyContent: 'center', height: 800}}>
               <PhotoFeed userId = { this.state.userId } />
               <Text>{this.state.userId}</Text>
               <Button onPress={() => firebase.auth().signOut()}>
